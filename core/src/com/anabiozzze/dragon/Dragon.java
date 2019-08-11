@@ -27,7 +27,7 @@ public class Dragon {
 
     public void update() {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || (Gdx.input.isButtonPressed(Input.Buttons.LEFT)))  {
             fall = 8;
         }
 

@@ -11,6 +11,8 @@ public class DragonGame extends ApplicationAdapter {
 	// класс фоновой картинки
 	Background bg;
 	Dragon dragon;
+	Mountains mountains;
+	Clouds clouds;
 
 	// метод загружает в память все необходимые элементы и производит первичные рассчеты
 	@Override
@@ -18,6 +20,8 @@ public class DragonGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		bg = new Background();
 		dragon = new Dragon();
+		mountains = new Mountains();
+		clouds = new Clouds();
 	}
 
 	// отрисовка 60 раз в сек. того, что задано в методе
@@ -33,6 +37,8 @@ public class DragonGame extends ApplicationAdapter {
 		// указываем изображение и коордитаты для отрисовки
 		bg.render(batch);
 		dragon.render(batch);
+		mountains.render(batch);
+		clouds.render(batch);
 		batch.end();
 	}
 
@@ -40,6 +46,8 @@ public class DragonGame extends ApplicationAdapter {
 	public void update() {
 	    bg.update();
 	    dragon.update();
+	    mountains.update();
+	    clouds.update();
     }
 
 	// метод очищает отрисованные элементы
