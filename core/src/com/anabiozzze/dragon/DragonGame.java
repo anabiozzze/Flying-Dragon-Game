@@ -10,13 +10,14 @@ public class DragonGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	// класс фоновой картинки
 	Background bg;
-
+	Dragon dragon;
 
 	// метод загружает в память все необходимые элементы и производит первичные рассчеты
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		bg = new Background();
+		dragon = new Dragon();
 	}
 
 	// отрисовка 60 раз в сек. того, что задано в методе
@@ -31,12 +32,14 @@ public class DragonGame extends ApplicationAdapter {
 		batch.begin();
 		// указываем изображение и коордитаты для отрисовки
 		bg.render(batch);
+		dragon.render(batch);
 		batch.end();
 	}
 
 	// обновление происходящего на экране для движения картинок
 	public void update() {
 	    bg.update();
+	    dragon.update();
     }
 
 	// метод очищает отрисованные элементы
