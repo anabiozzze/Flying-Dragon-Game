@@ -81,4 +81,15 @@ public class Clouds {
             clouds[i].update();
         }
     }
+
+    public void recreate() {
+        int firstPos = 500;
+
+        for (int i = 0; i < clouds.length; i++) {
+            clouds[i] = new Cloud(new Vector2(firstPos,400));
+            firstPos += align;
+        }
+
+        addPics();
+    }
 }

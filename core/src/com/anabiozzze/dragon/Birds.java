@@ -64,4 +64,14 @@ public class Birds {
             birds[i].update();
         }
     }
+
+    public void recreate() {
+        int firstPos = 500;
+
+        for (int i = 0; i < birds.length; i++) {
+            birds[i] = new Bird(new Vector2(firstPos,400));
+            birds[i].img = new Texture("bird.png");
+            firstPos += align;
+        }
+    }
 }

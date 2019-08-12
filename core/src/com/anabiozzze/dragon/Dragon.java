@@ -34,4 +34,9 @@ public class Dragon {
         fall += grav;
         position.y += fall;
     }
+
+    public void recreate() {
+        position = new Vector2(100, 280);
+        fall = 0;
+    }
 }

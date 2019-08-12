@@ -2,18 +2,21 @@ package com.anabiozzze.dragon;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class DragonGame extends ApplicationAdapter {
-	// отрисовка объектов
-	SpriteBatch batch;
-	// класс фоновой картинки
+
+	SpriteBatch batch; // отрисовка объектов
 	Background bg;
 	Dragon dragon;
 	Mountains mountains;
 	Clouds clouds;
 	Birds birds;
+	boolean youLose;
+	Texture newGame;
 
 	// метод загружает в память все необходимые элементы и производит первичные рассчеты
 	@Override
@@ -24,6 +27,8 @@ public class DragonGame extends ApplicationAdapter {
 		mountains = new Mountains();
 		clouds = new Clouds();
 		birds = new Birds();
+		youLose = false;
+		newGame = new Texture("you_lose.png");
 	}
 
 	// отрисовка 60 раз в сек. того, что задано в методе
@@ -38,7 +43,13 @@ public class DragonGame extends ApplicationAdapter {
 		batch.begin();
 		// указываем изображение и коордитаты для отрисовки
 		bg.render(batch);
-		dragon.render(batch);
+
+		// игрок проиграл - динозавтр перестаёт отрисовываться
+		if (!youLose) {
+			dragon.render(batch);
+		} else {
+			batch.draw(newGame, -90, -80);
+		}
 		mountains.render(batch);
 		clouds.render(batch);
 		birds.render(batch);
@@ -52,11 +63,38 @@ public class DragonGame extends ApplicationAdapter {
 	    mountains.update();
 	    clouds.update();
 	    birds.update();
+
+		for (int i = 0; i < Mountains.mounts.length; i++) {
+			if ((dragon.position.x+dragon.img.getWidth()) > (Mountains.mounts[i].position.x)
+					&& (dragon.position.y<(Mountains.mounts[i].position.y+30))) {
+				youLose = true;
+			}
+
+			if (dragon.position.y < 0) {
+				youLose = true;
+			}
+
+			if (dragon.position.y > 480) {
+				dragon.position.y -= 5;
+			}
+
+			if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) && youLose) {
+				recreate();
+			}
+		}
     }
 
 	// метод очищает отрисованные элементы
 	@Override
 	public void dispose () {
 		batch.dispose();
+	}
+
+	public void recreate() {
+		dragon.recreate();
+		mountains.recreate();
+		clouds.recreate();
+		birds.recreate();
+		youLose = false;
 	}
 }

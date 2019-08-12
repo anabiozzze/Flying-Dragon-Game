@@ -2,6 +2,7 @@ package com.anabiozzze.dragon;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 
@@ -16,10 +17,13 @@ public class Mountains {
         Texture img;
         Vector2 position;
         float speed;
+        Rectangle emptySpace;
 
         public Mount(Vector2 pos) {
             position = pos;
             speed = 2;
+            emptySpace = new Rectangle(position.x, position.y,
+                    150, align);
         }
 
         // если картинка полностью ушла за кадр (-350), новая появляется перед кадром (800)
@@ -28,10 +32,11 @@ public class Mountains {
             if (position.x < -350) {
                 position.x = 800;
             }
+            emptySpace.x = position.x;
         }
     }
 
-    Mount[] mounts; // массив для всех экземпляров гор
+    static Mount[] mounts; // массив для всех экземпляров гор
     int align; // отступ гор друг от друга при первом появлении на экане
 
     // в конструкторе заполняем массив горами и задаём им позиции
@@ -82,5 +87,16 @@ public class Mountains {
         for (int i = 0; i < mounts.length; i++) {
             mounts[i].update();
         }
+    }
+
+    public void recreate() {
+        int firstPos = 500;
+
+        for (int i = 0; i < mounts.length; i++) {
+            mounts[i] = new Mount(new Vector2(firstPos,0));
+            firstPos += align;
+        }
+
+        addPics();
     }
 }
