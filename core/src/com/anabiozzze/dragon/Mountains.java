@@ -17,14 +17,11 @@ public class Mountains {
         Texture img;
         Vector2 position;
         float speed;
-        Rectangle emptySpace;
 
         public Mount(Vector2 pos) {
             position = pos;
             speed = 2;
-            emptySpace = new Rectangle(position.x, position.y,
-                    150, align);
-        }
+    }
 
         // если картинка полностью ушла за кадр (-350), новая появляется перед кадром (800)
         public void update() {
@@ -32,7 +29,6 @@ public class Mountains {
             if (position.x < -350) {
                 position.x = 800;
             }
-            emptySpace.x = position.x;
         }
     }
 
@@ -89,6 +85,7 @@ public class Mountains {
         }
     }
 
+    // возвращет горы на стартовую позицию для начала новой игры
     public void recreate() {
         int firstPos = 500;
 

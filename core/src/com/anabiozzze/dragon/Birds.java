@@ -2,6 +2,7 @@ package com.anabiozzze.dragon;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -16,12 +17,14 @@ public class Birds {
         Vector2 position;
         float speed;
         int offset;
+        Rectangle damagePlace; // зона внутри фигуры, отвечающая за солкновление с другой фигурой
 
         // скорость в 2 раза выше скорости облаков
         public Bird(Vector2 pos) {
             position = pos;
             speed = 4.5f;
             offset = new Random().nextInt(150);
+            damagePlace = new Rectangle(position.x, position.y, 15, 15);
         }
 
         // если картинка полностью ушла за кадр (-350), новая появляется перед кадром (800)
@@ -32,10 +35,15 @@ public class Birds {
                 position.x = 1000;
                 position.y = 400-offset;
             }
+
+            // обновляем координаты зоны внутри фигуры одновременно с самой фигурой
+            if (img != null) {
+                damagePlace.setPosition(position.x + img.getWidth()/2, position.y + img.getHeight()/2);
+            }
         }
     }
 
-    Bird[] birds;
+    static Bird[] birds;
     int align;
 
     // в конструкторе создаем массив птиц (пока одна) и определяем первую позицию и отступ
@@ -65,6 +73,7 @@ public class Birds {
         }
     }
 
+    // возвращет птиц на стартовую позицию для начала новой игры
     public void recreate() {
         int firstPos = 500;
 

@@ -64,23 +64,47 @@ public class DragonGame extends ApplicationAdapter {
 	    clouds.update();
 	    birds.update();
 
+	    // дракон целиком "свалился" в горы - проигрыш
 		for (int i = 0; i < Mountains.mounts.length; i++) {
-			if ((dragon.position.x+dragon.img.getWidth()) > (Mountains.mounts[i].position.x)
-					&& (dragon.position.y<(Mountains.mounts[i].position.y+30))) {
+			if ((dragon.position.x + dragon.img.getWidth()) > (Mountains.mounts[i].position.x)
+					&& (dragon.position.y < (Mountains.mounts[i].position.y + 30))) {
 				youLose = true;
 			}
+		}
 
-			if (dragon.position.y < 0) {
-				youLose = true;
-			}
+		// дракон упал за нижнее поле - проигрыш
+		if (dragon.position.y < 0) {
+			youLose = true;
+		}
 
-			if (dragon.position.y > 480) {
-				dragon.position.y -= 5;
-			}
+		// дракон наполовину ушёл за вершнее поле - предел движения
+		if (dragon.position.y > 480) {
+			dragon.position.y -= 5;
+		}
 
-			if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) && youLose) {
-				recreate();
+		// дракон коснулся середины облака - проигрыш
+		for (int i = 0; i < Clouds.clouds.length; i++) {
+			if (dragon.damagePlace !=null && Clouds.clouds[i].damagePlace != null) {
+				if (dragon.damagePlace.overlaps(Clouds.clouds[i].damagePlace) && !youLose) {
+					youLose = true;
+					System.out.println("TRUUUUUUE");
+				}
 			}
+		}
+
+		// дракон столкнулся с птицей - проигрыш
+		for (int i = 0; i < Birds.birds.length; i++) {
+			if (dragon.damagePlace !=null && Birds.birds[i].damagePlace != null) {
+				if (dragon.damagePlace.overlaps(Birds.birds[i].damagePlace) && !youLose) {
+					youLose = true;
+					System.out.println("TRUUUUUUE");
+				}
+			}
+		}
+
+		// в случае проигрыша, при нажатии пробела или левой кнопки мыши - начинается новая игра
+		if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) && youLose) {
+			recreate();
 		}
     }
 
@@ -90,6 +114,7 @@ public class DragonGame extends ApplicationAdapter {
 		batch.dispose();
 	}
 
+	// возвращает все элементы на стартовую позицию для начала новой игры
 	public void recreate() {
 		dragon.recreate();
 		mountains.recreate();

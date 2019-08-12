@@ -2,6 +2,7 @@ package com.anabiozzze.dragon;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -16,11 +17,14 @@ public class Clouds {
         Vector2 position;
         float speed;
         int offset;
+        Rectangle damagePlace; // зона внутри фигуры, отвечающая за солкновление с другой фигурой
 
         public Cloud(Vector2 pos) {
             position = pos;
             speed = 2;
             offset = new Random().nextInt(250);
+            damagePlace = new Rectangle(position.x, position.y, 50, 50);
+
         }
 
         // если картинка полностью ушла за кадр (-350), новая появляется перед кадром (800)
@@ -31,10 +35,15 @@ public class Clouds {
                 position.x = 1000;
                 position.y = 400-offset;
             }
+
+            // обновляем координаты зоны внутри фигуры одновременно с самой фигурой
+            if (img != null) {
+                damagePlace.setPosition(position.x + img.getWidth()/2, position.y + img.getHeight()/2);
+            }
         }
     }
 
-    Cloud[] clouds; // массив для всех экземпляров облаков
+    static Cloud[] clouds; // массив для всех экземпляров облаков
     int align; // отступ облаков друг от друга при первом появлении на экане
 
     // в конструкторе создаем массив облаков и определяем первую позицию и отступ
@@ -48,7 +57,7 @@ public class Clouds {
             firstPos += align;
         }
 
-        addPics();
+        addPics(); // наполняем картинками
     }
 
     // добавляет все картинки облаков в массив картинок в случайном порядке
@@ -82,6 +91,7 @@ public class Clouds {
         }
     }
 
+    // возвращет облака на стартовую позицию для начала новой игры
     public void recreate() {
         int firstPos = 500;
 
