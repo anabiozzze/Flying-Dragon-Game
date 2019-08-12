@@ -13,6 +13,7 @@ public class DragonGame extends ApplicationAdapter {
 	Dragon dragon;
 	Mountains mountains;
 	Clouds clouds;
+	Birds birds;
 
 	// метод загружает в память все необходимые элементы и производит первичные рассчеты
 	@Override
@@ -22,6 +23,7 @@ public class DragonGame extends ApplicationAdapter {
 		dragon = new Dragon();
 		mountains = new Mountains();
 		clouds = new Clouds();
+		birds = new Birds();
 	}
 
 	// отрисовка 60 раз в сек. того, что задано в методе
@@ -39,6 +41,7 @@ public class DragonGame extends ApplicationAdapter {
 		dragon.render(batch);
 		mountains.render(batch);
 		clouds.render(batch);
+		birds.render(batch);
 		batch.end();
 	}
 
@@ -48,6 +51,7 @@ public class DragonGame extends ApplicationAdapter {
 	    dragon.update();
 	    mountains.update();
 	    clouds.update();
+	    birds.update();
     }
 
 	// метод очищает отрисованные элементы
