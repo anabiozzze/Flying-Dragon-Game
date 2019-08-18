@@ -77,7 +77,7 @@ public class Clouds {
         }
     }
 
-    // обновляет картинку на экране 60 раз в секунду, рисуя движение
+    // метод 60 раз в секунду выполняет всё, что указано в его теле (в т.ч. отрисовку объектов)
     public void render(SpriteBatch batch) {
         for (int i = 0; i < clouds.length; i++) {
             batch.draw(clouds[i].img, clouds[i].position.x, clouds[i].position.y);

@@ -1,8 +1,8 @@
 package com.anabiozzze.dragon.desktop;
 
+import com.anabiozzze.dragon.DragonGame;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.anabiozzze.dragon.DragonGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

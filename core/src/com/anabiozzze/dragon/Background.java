@@ -28,6 +28,7 @@ public class Background {
         bgs[1] = new BackgroundPic(new Vector2(1200, 0));
     }
 
+    // метод 60 раз в секунду выполняет всё, что указано в его теле (в т.ч. отрисовку объектов)
     public void render(SpriteBatch batch) {
         for (int i = 0; i < bgs.length; i++) {
             batch.draw(bgs[i].tx, bgs[i].pos.x, bgs[i].pos.y);

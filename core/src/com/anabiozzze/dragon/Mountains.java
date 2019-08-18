@@ -17,10 +17,12 @@ public class Mountains {
         Texture img;
         Vector2 position;
         float speed;
+        Rectangle damagePlace; // зона внутри фигуры, отвечающая за солкновление с другой фигурой
 
         public Mount(Vector2 pos) {
             position = pos;
             speed = 2;
+            damagePlace = new Rectangle(position.x, position.y, 70, 100);
     }
 
         // если картинка полностью ушла за кадр (-350), новая появляется перед кадром (800)
@@ -28,6 +30,11 @@ public class Mountains {
             position.x -= speed;
             if (position.x < -350) {
                 position.x = 800;
+            }
+
+            // обновляем координаты зоны внутри фигуры одновременно с самой фигурой
+            if (img != null) {
+                damagePlace.setPosition(position.x + img.getWidth()/2, position.y + img.getHeight()/2);
             }
         }
     }
@@ -71,7 +78,7 @@ public class Mountains {
         }
     }
 
-    // обновляет картинку на экране 60 раз в секунду, рисуя движение
+    // метод 60 раз в секунду выполняет всё, что указано в его теле (в т.ч. отрисовку объектов)
     public void render(SpriteBatch batch) {
         for (int i = 0; i < mounts.length; i++) {
             batch.draw(mounts[i].img, mounts[i].position.x, mounts[i].position.y);

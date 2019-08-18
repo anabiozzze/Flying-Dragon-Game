@@ -5,7 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class DragonGame extends ApplicationAdapter {
 
@@ -17,6 +20,11 @@ public class DragonGame extends ApplicationAdapter {
 	Birds birds;
 	boolean youLose;
 	Texture newGame;
+	private int score;
+	private String scoreString;
+	private BitmapFont font;
+	HealthPoints health;
+	int healthCouner = 0;
 
 	// метод загружает в память все необходимые элементы и производит первичные рассчеты
 	@Override
@@ -29,9 +37,13 @@ public class DragonGame extends ApplicationAdapter {
 		birds = new Birds();
 		youLose = false;
 		newGame = new Texture("you_lose.png");
+		score = 0;
+		scoreString = "SCORE: 0";
+		font = new BitmapFont();
+		health = new HealthPoints();
 	}
 
-	// отрисовка 60 раз в сек. того, что задано в методе
+	// метод 60 раз в секунду выполняет всё, что указано в его теле (в т.ч. отрисовку объектов)
 	@Override
 	public void render () {
 	    update();
@@ -41,18 +53,26 @@ public class DragonGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
-		// указываем изображение и коордитаты для отрисовки
+		// запускаем основной фон (небо)
 		bg.render(batch);
 
-		// игрок проиграл - динозавтр перестаёт отрисовываться
+		// игрок проиграл - динозавр перестаёт отрисовываться
 		if (!youLose) {
 			dragon.render(batch);
 		} else {
+			// отрисовываем дракона
 			batch.draw(newGame, -90, -80);
 		}
+
+		// аналогично с горами, облаками и птицами
 		mountains.render(batch);
 		clouds.render(batch);
 		birds.render(batch);
+
+		font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+		font.draw(batch, scoreString, 700, 490);
+		health.render(batch);
+
 		batch.end();
 	}
 
@@ -63,14 +83,7 @@ public class DragonGame extends ApplicationAdapter {
 	    mountains.update();
 	    clouds.update();
 	    birds.update();
-
-	    // дракон целиком "свалился" в горы - проигрыш
-		for (int i = 0; i < Mountains.mounts.length; i++) {
-			if ((dragon.position.x + dragon.img.getWidth()) > (Mountains.mounts[i].position.x)
-					&& (dragon.position.y < (Mountains.mounts[i].position.y + 30))) {
-				youLose = true;
-			}
-		}
+		health.update();
 
 		// дракон упал за нижнее поле - проигрыш
 		if (dragon.position.y < 0) {
@@ -79,27 +92,51 @@ public class DragonGame extends ApplicationAdapter {
 
 		// дракон наполовину ушёл за вершнее поле - предел движения
 		if (dragon.position.y > 480) {
-			dragon.position.y -= 5;
+			dragon.position.y -= 10;
+
 		}
 
 		// дракон коснулся середины облака - проигрыш
-		for (int i = 0; i < Clouds.clouds.length; i++) {
-			if (dragon.damagePlace !=null && Clouds.clouds[i].damagePlace != null) {
-				if (dragon.damagePlace.overlaps(Clouds.clouds[i].damagePlace) && !youLose) {
-					youLose = true;
-					System.out.println("TRUUUUUUE");
-				}
-			}
-		}
+//		for (int i = 0; i < Clouds.clouds.length; i++) {
+//			if (dragon.damagePlace !=null && Clouds.clouds[i].damagePlace != null) {
+//				if (dragon.damagePlace.overlaps(Clouds.clouds[i].damagePlace) && !youLose) {
+//					youLose = true;
+//					System.out.println("TRUUUUUUE");
+//				}
+//			}
+//		}
+
+//		// дракон коснулся середины горы - проигрыш
+//		for (int i = 0; i < Mountains.mounts.length; i++) {
+//			if (dragon.damagePlace !=null && Mountains.mounts[i].damagePlace != null) {
+//				if (dragon.damagePlace.overlaps(Mountains.mounts[i].damagePlace) && !youLose) {
+//					youLose = true;
+//					System.out.println("TRUUUUUUE");
+//				}
+//			}
+//		}
 
 		// дракон столкнулся с птицей - проигрыш
 		for (int i = 0; i < Birds.birds.length; i++) {
 			if (dragon.damagePlace !=null && Birds.birds[i].damagePlace != null) {
 				if (dragon.damagePlace.overlaps(Birds.birds[i].damagePlace) && !youLose) {
-					youLose = true;
-					System.out.println("TRUUUUUUE");
+					Birds.birds[i].damagePlace.set(0,0, 0, 0);
+					Birds.birds[i].img = new Texture("empty.png");
+					health.HP[healthCouner].img = new Texture("empty.png");
+					healthCouner++;
+					System.out.println(healthCouner);
+
+					if (healthCouner >= 3) {
+						youLose = true;
+					}
 				}
 			}
+		}
+
+		if (birds.getShot) {
+			score = score + 100;
+			scoreString = "SCORE: " + score;
+			birds.getShot = false;
 		}
 
 		// в случае проигрыша, при нажатии пробела или левой кнопки мыши - начинается новая игра
@@ -120,6 +157,10 @@ public class DragonGame extends ApplicationAdapter {
 		mountains.recreate();
 		clouds.recreate();
 		birds.recreate();
+		health.recreate();
+		score = 0;
+		scoreString = "SCORE: " + score;
 		youLose = false;
+		healthCouner = 0;
 	}
 }
