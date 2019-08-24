@@ -72,7 +72,7 @@ public class Dragon {
         position.y += fall;
 
         // обновляем координаты зоны внутри фигуры одновременно с самой фигурой
-        damagePlace.setPosition(position.x + img.getWidth(), position.y + img.getHeight()/2);
+        damagePlace.setPosition(position.x + img.getWidth()/2, position.y + img.getHeight()/2);
 
         // обновляем состояние огненного шара (в т.ч. положение в пространстве)
         fire.update();

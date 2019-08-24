@@ -21,7 +21,7 @@ public class FireBlast {
         img = new Texture("fire.png");
         position = new Vector2(Dragon.position.x, Dragon.position.y);
         damagePlace = new Rectangle(position.x,
-                position.y, 100, 80);
+                position.y, 70, 80);
     }
 
     // метод 60 раз в секунду выполняет всё, что указано в его теле (в т.ч. отрисовку объектов)

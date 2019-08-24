@@ -26,6 +26,7 @@ public class DragonGame extends ApplicationAdapter {
 	private BitmapFont font;
 	HealthPoints health;
 	int healthCouner = 0;
+	int timeCounter = 0;
 
 	// метод загружает в память все необходимые элементы и производит первичные рассчеты
 	@Override
@@ -91,6 +92,7 @@ public class DragonGame extends ApplicationAdapter {
 		hotdogs.update();
 		health.update();
 
+
 		// дракон упал за нижнее поле - проигрыш
 		if (dragon.position.y < 0) {
 			youLose = true;
@@ -128,13 +130,21 @@ public class DragonGame extends ApplicationAdapter {
 				if (dragon.damagePlace.overlaps(Birds.birds[i].damagePlace) && !youLose) {
 					Birds.birds[i].damagePlace.set(0,0, 0, 0);
 					Birds.birds[i].img = new Texture("empty.png");
+					birds.isDead = true;
 					health.HP[healthCouner].img = new Texture("empty.png");
 					healthCouner++;
-					System.out.println(healthCouner);
 
 					if (healthCouner >= 3) {
 						youLose = true;
 					}
+				}
+				if (dragon.damagePlace.overlaps(Hotdogs.hotdogs[i].damagePlace) && !youLose) {
+					Hotdogs.hotdogs[i].damagePlace.set(0,0, 0, 0);
+					Hotdogs.hotdogs[i].img = new Texture("empty.png");
+					Hotdogs.hotdogs[i].caught = true;
+					score = score + 100;
+					scoreString = "SCORE: " + score;
+
 				}
 			}
 		}

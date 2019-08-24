@@ -14,7 +14,6 @@ public class Hotdogs {
 
     static Hotdog[] hotdogs;
     int align;
-    static boolean caught;
 
     // в конструкторе создаем массив птиц (пока одна, т.к. одн дизайн) и определяем первую позицию и отступ
     public Hotdogs() {
@@ -32,6 +31,7 @@ public class Hotdogs {
         int offset; // случайная переменная, которая будет изменять положение по вертикали новых птиц
         int counter;
         Rectangle damagePlace; // зона внутри фигуры, отвечающая за солкновление с другой фигурой
+        boolean caught;
 
         // скорость в 2 раза выше скорости облаков
         public Hotdog(Vector2 pos) {
@@ -55,7 +55,7 @@ public class Hotdogs {
             }
 
             // обновляем координаты зоны внутри фигуры одновременно с самой фигурой
-            if (img != null) {
+            if (img != null && !caught) {
                 damagePlace.setPosition(position.x, position.y + img.getHeight());
             }
 

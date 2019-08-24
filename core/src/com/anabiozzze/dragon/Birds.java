@@ -60,7 +60,7 @@ public class Birds {
             }
 
             // обновляем координаты зоны внутри фигуры одновременно с самой фигурой
-            if (img != null) {
+            if (img != null && !isDead) {
                 damagePlace.setPosition(position.x, position.y + img.getHeight());
             }
 
@@ -68,6 +68,7 @@ public class Birds {
             if (FireBlast.damagePlace.contains(damagePlace)) {
                 getShot = true;
                 isDead = true;
+                damagePlace.setPosition(0,0);
             }
 
             counter++;
