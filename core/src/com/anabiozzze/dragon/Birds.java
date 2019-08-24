@@ -31,6 +31,7 @@ public class Birds {
         Vector2 position;
         float speed;
         int offset; // случайная переменная, которая будет изменять положение по вертикали новых птиц
+        int counter;
         Rectangle damagePlace; // зона внутри фигуры, отвечающая за солкновление с другой фигурой
         Animation<TextureRegion> animation;
         float elapsed;
@@ -41,6 +42,7 @@ public class Birds {
             isDead = false;
             position = pos;
             speed = 4.5f;
+            counter = 0;
             offset = new Random().nextInt(150);
             damagePlace = new Rectangle(position.x, position.y, 50, 50);
             animation = GifDecoder.loadGIFAnimation(Animation.PlayMode.NORMAL, Gdx.files.internal("explosion.gif").read());
@@ -66,6 +68,16 @@ public class Birds {
             if (FireBlast.damagePlace.contains(damagePlace)) {
                 getShot = true;
                 isDead = true;
+            }
+
+            counter++;
+
+            // меняем положение крыльев дракона каждые 15 миллисекунд
+            if (!isDead) {
+                switch (counter) {
+                    case 15 : img = new Texture("bird2.png"); break;
+                    case 30 : img = new Texture("bird.png"); counter =0; break;
+                }
             }
 
         }

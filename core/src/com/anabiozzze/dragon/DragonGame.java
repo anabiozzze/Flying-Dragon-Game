@@ -3,12 +3,11 @@ package com.anabiozzze.dragon;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class DragonGame extends ApplicationAdapter {
 
@@ -18,6 +17,8 @@ public class DragonGame extends ApplicationAdapter {
 	Mountains mountains;
 	Clouds clouds;
 	Birds birds;
+	Hotdogs hotdogs;
+	Music sound;
 	boolean youLose;
 	Texture newGame;
 	private int score;
@@ -35,6 +36,8 @@ public class DragonGame extends ApplicationAdapter {
 		mountains = new Mountains();
 		clouds = new Clouds();
 		birds = new Birds();
+		hotdogs = new Hotdogs();
+		sound =Gdx.audio.newMusic(Gdx.files.internal("8wiggle.mp3"));
 		youLose = false;
 		newGame = new Texture("you_lose.png");
 		score = 0;
@@ -55,6 +58,7 @@ public class DragonGame extends ApplicationAdapter {
 		batch.begin();
 		// запускаем основной фон (небо)
 		bg.render(batch);
+		sound.play();
 
 		// игрок проиграл - динозавр перестаёт отрисовываться
 		if (!youLose) {
@@ -68,6 +72,7 @@ public class DragonGame extends ApplicationAdapter {
 		mountains.render(batch);
 		clouds.render(batch);
 		birds.render(batch);
+		hotdogs.render(batch);
 
 		font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 		font.draw(batch, scoreString, 700, 490);
@@ -83,6 +88,7 @@ public class DragonGame extends ApplicationAdapter {
 	    mountains.update();
 	    clouds.update();
 	    birds.update();
+		hotdogs.update();
 		health.update();
 
 		// дракон упал за нижнее поле - проигрыш
@@ -148,6 +154,7 @@ public class DragonGame extends ApplicationAdapter {
 	// метод очищает отрисованные элементы
 	@Override
 	public void dispose () {
+		sound.dispose();
 		batch.dispose();
 	}
 

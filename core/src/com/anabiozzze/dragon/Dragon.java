@@ -14,12 +14,14 @@ public class Dragon {
     float fall; // текущая скорость падения дракона
     float grav; // ускорение падения
     Rectangle damagePlace; // зона внутри фигуры, отвечающая за солкновление с другой фигурой
+    int counter; // счетчик для смены картинки дракона каждые 15 миллисекунд (имитация полёта)
 
     FireBlast fire;
 
 
     // возвращет дракона на стартовую позицию для начала новой игры
     public Dragon() {
+        counter = 0;
 
         img = new Texture("dragon.png");
         position = new Vector2(100, 280);
@@ -49,6 +51,14 @@ public class Dragon {
 
     // метод изменяет положение объекта в пространстве, при необходимости
     public void update() {
+
+        counter++;
+
+        // меняем положение крыльев дракона каждые 15 миллисекунд
+        switch (counter) {
+            case 15 : img = new Texture("dragon2.png"); break;
+            case 30 : img = new Texture("dragon.png"); counter =0; break;
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || (Gdx.input.isButtonPressed(Input.Buttons.LEFT)))  {
             fall = 8;
